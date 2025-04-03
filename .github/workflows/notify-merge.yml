@@ -1,0 +1,28 @@
+name: Notify Author on Merge
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true # Only run if the PR was merged
+    steps:
+      - name: Send Notification
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const author = context.payload.pull_request.user.login;
+            const prNumber = context.payload.pull_request.number;
+            const repoOwner = context.repo.owner;
+            const repoName = context.repo.repo;
+
+            await github.rest.issues.createComment({
+              owner: repoOwner,
+              repo: repoName,
+              issue_number: prNumber,
+              body: '@${author}, your pull request #${prNumber} has been successfully merged!'
+            });
