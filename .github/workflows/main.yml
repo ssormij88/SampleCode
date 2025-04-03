@@ -20,3 +20,5 @@ jobs:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           min_reviewers: 1
           include_teams: false
+          issue-title: "Deploying to prod from dev"
+          issue-body: "Please approve or deny the deployment"
